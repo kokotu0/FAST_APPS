@@ -31,3 +31,10 @@ if settings.all_cors_origins:
         allow_headers=["*"],
     )
 
+app.include_router(api_router, prefix=settings.API_V1_STR)
+
+
+@app.get("/test-deploy")
+def test_deploy():
+    """Railway 배포 테스트용 엔드포인트"""
+    return {"status": "ok", "message": "Railway deployment is working!", "version": "1.0.1"}
