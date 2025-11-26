@@ -107,3 +107,9 @@ def delete_item(
     session.delete(item)
     session.commit()
     return Message(message="Item deleted successfully")
+
+
+@router.get("/test-deploy")
+def test_deploy():
+    """Railway 배포 테스트용 엔드포인트"""
+    return {"status": "ok", "message": "Railway deployment is working!", "version": "1.0.1"}
