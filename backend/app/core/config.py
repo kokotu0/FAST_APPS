@@ -94,6 +94,21 @@ class Settings(BaseSettings):
     FIRST_SUPERUSER: EmailStr
     FIRST_SUPERUSER_PASSWORD: str
 
+    # DirectSend API 설정
+    DIRECTSEND_USERNAME: str | None = None
+    DIRECTSEND_API_KEY: str | None = None
+    DIRECTSEND_SENDER_EMAIL: str | None = None
+    DIRECTSEND_SENDER_NAME: str | None = None
+    DIRECTSEND_SENDER_PHONE: str | None = None
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def directsend_enabled(self) -> bool:
+        return bool(
+            self.DIRECTSEND_USERNAME and 
+            self.DIRECTSEND_API_KEY
+        )
+
     def _check_default_secret(self, var_name: str, value: str | None) -> None:
         if value == "changethis":
             message = (
