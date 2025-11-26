@@ -51,13 +51,13 @@ interface ServiceStatus {
   service: string
 }
 
-async function getHeaders(): Promise<HeadersInit> {
-  const token = OpenAPI.TOKEN
-  const resolvedToken = typeof token === "function" ? await token() : token
+function getHeaders(): HeadersInit {
+  // 로컬 스토리지에서 직접 토큰을 가져옴
+  const token = localStorage.getItem("access_token")
   
   return {
     "Content-Type": "application/json",
-    ...(resolvedToken ? { Authorization: `Bearer ${resolvedToken}` } : {}),
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   }
 }
 
@@ -68,7 +68,7 @@ export const DirectSendMailService = {
   async sendMail(data: SendMailRequest): Promise<DirectSendResponse> {
     const response = await fetch(`${BASE_URL}/api/v1/directsend/mail/send`, {
       method: "POST",
-      headers: await getHeaders(),
+      headers: getHeaders(),
       body: JSON.stringify(data),
     })
 
@@ -86,7 +86,7 @@ export const DirectSendMailService = {
   async getStatus(): Promise<ServiceStatus> {
     const response = await fetch(`${BASE_URL}/api/v1/directsend/mail/status`, {
       method: "GET",
-      headers: await getHeaders(),
+      headers: getHeaders(),
     })
 
     if (!response.ok) {
@@ -104,7 +104,7 @@ export const DirectSendSMSService = {
   async sendSMS(data: SendSMSRequest): Promise<DirectSendResponse> {
     const response = await fetch(`${BASE_URL}/api/v1/directsend/sms/send`, {
       method: "POST",
-      headers: await getHeaders(),
+      headers: getHeaders(),
       body: JSON.stringify(data),
     })
 
@@ -122,7 +122,7 @@ export const DirectSendSMSService = {
   async getStatus(): Promise<ServiceStatus> {
     const response = await fetch(`${BASE_URL}/api/v1/directsend/sms/status`, {
       method: "GET",
-      headers: await getHeaders(),
+      headers: getHeaders(),
     })
 
     if (!response.ok) {
