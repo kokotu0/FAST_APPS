@@ -5,7 +5,7 @@ import {
   redirect,
 } from "@tanstack/react-router"
 import { type SubmitHandler, useForm } from "react-hook-form"
-import { FiLock, FiMail } from "react-icons/fi"
+import { FiLock, FiUser } from "react-icons/fi"
 
 import type { Body_login_login_access_token as AccessToken } from "@/client"
 import { Button } from "@/components/ui/button"
@@ -14,7 +14,7 @@ import { InputGroup } from "@/components/ui/input-group"
 import { PasswordInput } from "@/components/ui/password-input"
 import useAuth, { isLoggedIn } from "@/hooks/useAuth"
 import Logo from "/assets/images/fastapi-logo.svg"
-import { emailPattern, passwordRules } from "../utils"
+import { passwordRules } from "../utils"
 
 export const Route = createFileRoute("/login")({
   component: Login,
@@ -75,16 +75,16 @@ function Login() {
       />
       <Field
         invalid={!!errors.username}
-        errorText={errors.username?.message || !!error}
+        errorText={errors.username?.message || (error ? "로그인 정보를 확인해주세요" : undefined)}
       >
-        <InputGroup w="100%" startElement={<FiMail />}>
+        <InputGroup w="100%" startElement={<FiUser />}>
           <Input
             {...register("username", {
-              required: "Username is required",
-              pattern: emailPattern,
+              required: "아이디를 입력해주세요",
+              minLength: { value: 4, message: "아이디는 4자 이상이어야 합니다" },
             })}
-            placeholder="Email"
-            type="email"
+            placeholder="아이디"
+            type="text"
           />
         </InputGroup>
       </Field>
@@ -92,19 +92,19 @@ function Login() {
         type="password"
         startElement={<FiLock />}
         {...register("password", passwordRules())}
-        placeholder="Password"
+        placeholder="비밀번호"
         errors={errors}
       />
       <RouterLink to="/recover-password" className="main-link">
-        Forgot Password?
+        비밀번호를 잊으셨나요?
       </RouterLink>
       <Button variant="solid" type="submit" loading={isSubmitting} size="md">
-        Log In
+        로그인
       </Button>
       <Text>
-        Don't have an account?{" "}
+        계정이 없으신가요?{" "}
         <RouterLink to="/signup" className="main-link">
-          Sign Up
+          회원가입
         </RouterLink>
       </Text>
     </Container>

@@ -5,7 +5,7 @@ import {
   redirect,
 } from "@tanstack/react-router"
 import { type SubmitHandler, useForm } from "react-hook-form"
-import { FiLock, FiUser } from "react-icons/fi"
+import { FiLock, FiMail, FiUser } from "react-icons/fi"
 
 import type { UserRegister } from "@/client"
 import { Button } from "@/components/ui/button"
@@ -42,9 +42,10 @@ function SignUp() {
     mode: "onBlur",
     criteriaMode: "all",
     defaultValues: {
+      user_id: "",
       email: "",
-      full_name: "",
-      password: "",
+      name: "",
+      plain_password: "",
       confirm_password: "",
     },
   })
@@ -73,55 +74,82 @@ function SignUp() {
           alignSelf="center"
           mb={4}
         />
+        
+        {/* 아이디 */}
         <Field
-          invalid={!!errors.full_name}
-          errorText={errors.full_name?.message}
+          invalid={!!errors.user_id}
+          errorText={errors.user_id?.message}
         >
           <InputGroup w="100%" startElement={<FiUser />}>
             <Input
-              minLength={3}
-              {...register("full_name", {
-                required: "Full Name is required",
+              {...register("user_id", {
+                required: "아이디를 입력해주세요",
+                minLength: { value: 4, message: "아이디는 4자 이상이어야 합니다" },
+                maxLength: { value: 50, message: "아이디는 50자 이하여야 합니다" },
               })}
-              placeholder="Full Name"
+              placeholder="아이디"
               type="text"
             />
           </InputGroup>
         </Field>
 
-        <Field invalid={!!errors.email} errorText={errors.email?.message}>
+        {/* 이름 */}
+        <Field
+          invalid={!!errors.name}
+          errorText={errors.name?.message}
+        >
           <InputGroup w="100%" startElement={<FiUser />}>
             <Input
+              {...register("name", {
+                required: "이름을 입력해주세요",
+                minLength: { value: 1, message: "이름은 1자 이상이어야 합니다" },
+                maxLength: { value: 100, message: "이름은 100자 이하여야 합니다" },
+              })}
+              placeholder="이름"
+              type="text"
+            />
+          </InputGroup>
+        </Field>
+
+        {/* 이메일 */}
+        <Field invalid={!!errors.email} errorText={errors.email?.message}>
+          <InputGroup w="100%" startElement={<FiMail />}>
+            <Input
               {...register("email", {
-                required: "Email is required",
+                required: "이메일을 입력해주세요",
                 pattern: emailPattern,
               })}
-              placeholder="Email"
+              placeholder="이메일"
               type="email"
             />
           </InputGroup>
         </Field>
+
+        {/* 비밀번호 */}
         <PasswordInput
-          type="password"
+          type="plain_password"
           startElement={<FiLock />}
-          {...register("password", passwordRules())}
-          placeholder="Password"
+          {...register("plain_password", passwordRules())}
+          placeholder="비밀번호"
           errors={errors}
         />
+
+        {/* 비밀번호 확인 */}
         <PasswordInput
           type="confirm_password"
           startElement={<FiLock />}
-          {...register("confirm_password", confirmPasswordRules(getValues))}
-          placeholder="Confirm Password"
+          {...register("confirm_password", confirmPasswordRules(getValues, "plain_password"))}
+          placeholder="비밀번호 확인"
           errors={errors}
         />
+
         <Button variant="solid" type="submit" loading={isSubmitting}>
-          Sign Up
+          회원가입
         </Button>
         <Text>
-          Already have an account?{" "}
+          이미 계정이 있으신가요?{" "}
           <RouterLink to="/login" className="main-link">
-            Log In
+            로그인
           </RouterLink>
         </Text>
       </Container>

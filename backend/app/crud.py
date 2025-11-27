@@ -4,12 +4,12 @@ from typing import Any
 from sqlmodel import Session, select
 
 from app.core.security import get_password_hash, verify_password
-from app.models import Item, ItemCreate, User, UserCreate, UserUpdate
+from app.models.UserModels import User, UserRegister, UserUpdate
 
 
-def create_user(*, session: Session, user_create: UserCreate) -> User:
+def create_user(*, session: Session, user_create: UserRegister) -> User:
     db_obj = User.model_validate(
-        user_create, update={"hashed_password": get_password_hash(user_create.password)}
+        user_create, update={"hashed_password": get_password_hash(user_create.plain_password)}
     )
     session.add(db_obj)
     session.commit()
@@ -37,8 +37,16 @@ def get_user_by_email(*, session: Session, email: str) -> User | None:
     return session_user
 
 
-def authenticate(*, session: Session, email: str, password: str) -> User | None:
-    db_user = get_user_by_email(session=session, email=email)
+def get_user_by_user_id(*, session: Session, user_id: str) -> User | None:
+    """user_id로 사용자 조회"""
+    statement = select(User).where(User.user_id == user_id)
+    session_user = session.exec(statement).first()
+    return session_user
+
+
+def authenticate(*, session: Session, user_id: str, password: str) -> User | None:
+    """user_id와 password로 인증"""
+    db_user = get_user_by_user_id(session=session, user_id=user_id)
     if not db_user:
         return None
     if not verify_password(password, db_user.hashed_password):
@@ -46,9 +54,3 @@ def authenticate(*, session: Session, email: str, password: str) -> User | None:
     return db_user
 
 
-def create_item(*, session: Session, item_in: ItemCreate, owner_id: uuid.UUID) -> Item:
-    db_item = Item.model_validate(item_in, update={"owner_id": owner_id})
-    session.add(db_item)
-    session.commit()
-    session.refresh(db_item)
-    return db_item

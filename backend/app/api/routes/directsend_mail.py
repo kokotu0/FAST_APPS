@@ -35,7 +35,6 @@ class SendMailResponse(BaseModel):
 @router.post("/send", response_model=SendMailResponse)
 async def send_mail(
     request: SendMailRequest,
-    current_user: CurrentUser,
 ) -> SendMailResponse:
     """
     메일 발송
@@ -88,7 +87,6 @@ async def send_mail(
 
 @router.get("/status")
 async def get_mail_service_status(
-    current_user: CurrentUser,
 ) -> dict:
     """
     메일 서비스 상태 확인

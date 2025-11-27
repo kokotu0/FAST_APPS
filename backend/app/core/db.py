@@ -1,8 +1,7 @@
 from sqlmodel import Session, create_engine, select
 
-from app import crud
 from app.core.config import settings
-from app.models import User, UserCreate
+from app.models.UserModels import User, UserRegister
 
 engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI))
 
@@ -25,9 +24,15 @@ def init_db(session: Session) -> None:
         select(User).where(User.email == settings.FIRST_SUPERUSER)
     ).first()
     if not user:
-        user_in = UserCreate(
+        # 초기 슈퍼유저 생성
+        user_in = UserRegister(
+            user_id="admin",
             email=settings.FIRST_SUPERUSER,
-            password=settings.FIRST_SUPERUSER_PASSWORD,
-            is_superuser=True,
+            plain_password=settings.FIRST_SUPERUSER_PASSWORD,
+            name="관리자",
         )
-        user = crud.create_user(session=session, user_create=user_in)
+        user = User.from_register(user_in)
+        user.is_superuser = True  # 슈퍼유저로 설정
+        session.add(user)
+        session.commit()
+        session.refresh(user)

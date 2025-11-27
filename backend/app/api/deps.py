@@ -1,22 +1,26 @@
 from collections.abc import Generator
+import logging
 from typing import Annotated
 
+from app.models import TokenPayload
+from app.models.UserModels import User
 import jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 from pydantic import ValidationError
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 from app.core import security
 from app.core.config import settings
 from app.core.db import engine
-from app.models import TokenPayload, User
 
 reusable_oauth2 = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_STR}/login/access-token"
 )
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)  
 
 def get_db() -> Generator[Session, None, None]:
     with Session(engine) as session:
@@ -38,11 +42,18 @@ def get_current_user(session: SessionDep, token: TokenDep) -> User:
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
         )
-    user = session.get(User, token_data.sub)
+    
+    # user_id로 사용자 조회 (JWT sub에 user_id 저장)
+    user = session.exec(
+        select(User).where(User.user_id == token_data.sub)
+    ).first()
+    
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    if not user.is_active:
+    if not user.useYN:
         raise HTTPException(status_code=400, detail="Inactive user")
+    logger.debug(f"token: {token}")
+    logger.debug(f"user: {user}")
     return user
 
 

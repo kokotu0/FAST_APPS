@@ -10,7 +10,7 @@ from app.api.deps import CurrentUser, SessionDep, get_current_active_superuser
 from app.core import security
 from app.core.config import settings
 from app.core.security import get_password_hash
-from app.models import Message, NewPassword, Token, UserPublic
+from app.models import Message, NewPassword, Token, UserOut
 from app.utils import (
     generate_password_reset_token,
     generate_reset_password_email,
@@ -27,23 +27,24 @@ def login_access_token(
 ) -> Token:
     """
     OAuth2 compatible token login, get an access token for future requests
+    username 필드에 user_id를 입력받습니다.
     """
     user = crud.authenticate(
-        session=session, email=form_data.username, password=form_data.password
+        session=session, user_id=form_data.username, password=form_data.password
     )
     if not user:
-        raise HTTPException(status_code=400, detail="Incorrect email or password")
-    elif not user.is_active:
-        raise HTTPException(status_code=400, detail="Inactive user")
+        raise HTTPException(status_code=400, detail="아이디 또는 비밀번호가 올바르지 않습니다")
+    elif not user.useYN:
+        raise HTTPException(status_code=400, detail="비활성화된 계정입니다")
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     return Token(
         access_token=security.create_access_token(
-            user.id, expires_delta=access_token_expires
+            user.user_id, expires_delta=access_token_expires
         )
     )
 
 
-@router.post("/login/test-token", response_model=UserPublic)
+@router.post("/login/test-token", response_model=UserOut)
 def test_token(current_user: CurrentUser) -> Any:
     """
     Test access token
@@ -89,7 +90,7 @@ def reset_password(session: SessionDep, body: NewPassword) -> Message:
             status_code=404,
             detail="The user with this email does not exist in the system.",
         )
-    elif not user.is_active:
+    elif not user.useYN:
         raise HTTPException(status_code=400, detail="Inactive user")
     hashed_password = get_password_hash(password=body.new_password)
     user.hashed_password = hashed_password

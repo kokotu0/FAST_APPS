@@ -17,7 +17,12 @@ import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
 import { Route as LayoutSettingsRouteImport } from './routes/_layout/settings'
 import { Route as LayoutItemsRouteImport } from './routes/_layout/items'
+import { Route as LayoutDirectsendSmsRouteImport } from './routes/_layout/directsend-sms'
+import { Route as LayoutDirectsendMailRouteImport } from './routes/_layout/directsend-mail'
 import { Route as LayoutAdminRouteImport } from './routes/_layout/admin'
+import { Route as LayoutFormRegisterTestRouteImport } from './routes/_layout/form-register/test'
+import { Route as LayoutFormRegisterListRouteImport } from './routes/_layout/form-register/list'
+import { Route as LayoutFormRegisterIdxRouteImport } from './routes/_layout/form-register/$idx'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -58,9 +63,34 @@ const LayoutItemsRoute = LayoutItemsRouteImport.update({
   path: '/items',
   getParentRoute: () => LayoutRoute,
 } as any)
+const LayoutDirectsendSmsRoute = LayoutDirectsendSmsRouteImport.update({
+  id: '/directsend-sms',
+  path: '/directsend-sms',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutDirectsendMailRoute = LayoutDirectsendMailRouteImport.update({
+  id: '/directsend-mail',
+  path: '/directsend-mail',
+  getParentRoute: () => LayoutRoute,
+} as any)
 const LayoutAdminRoute = LayoutAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutFormRegisterTestRoute = LayoutFormRegisterTestRouteImport.update({
+  id: '/form-register/test',
+  path: '/form-register/test',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutFormRegisterListRoute = LayoutFormRegisterListRouteImport.update({
+  id: '/form-register/list',
+  path: '/form-register/list',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutFormRegisterIdxRoute = LayoutFormRegisterIdxRouteImport.update({
+  id: '/form-register/$idx',
+  path: '/form-register/$idx',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -70,9 +100,14 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/admin': typeof LayoutAdminRoute
+  '/directsend-mail': typeof LayoutDirectsendMailRoute
+  '/directsend-sms': typeof LayoutDirectsendSmsRoute
   '/items': typeof LayoutItemsRoute
   '/settings': typeof LayoutSettingsRoute
   '/': typeof LayoutIndexRoute
+  '/form-register/$idx': typeof LayoutFormRegisterIdxRoute
+  '/form-register/list': typeof LayoutFormRegisterListRoute
+  '/form-register/test': typeof LayoutFormRegisterTestRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
@@ -80,9 +115,14 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/admin': typeof LayoutAdminRoute
+  '/directsend-mail': typeof LayoutDirectsendMailRoute
+  '/directsend-sms': typeof LayoutDirectsendSmsRoute
   '/items': typeof LayoutItemsRoute
   '/settings': typeof LayoutSettingsRoute
   '/': typeof LayoutIndexRoute
+  '/form-register/$idx': typeof LayoutFormRegisterIdxRoute
+  '/form-register/list': typeof LayoutFormRegisterListRoute
+  '/form-register/test': typeof LayoutFormRegisterTestRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -92,9 +132,14 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/_layout/admin': typeof LayoutAdminRoute
+  '/_layout/directsend-mail': typeof LayoutDirectsendMailRoute
+  '/_layout/directsend-sms': typeof LayoutDirectsendSmsRoute
   '/_layout/items': typeof LayoutItemsRoute
   '/_layout/settings': typeof LayoutSettingsRoute
   '/_layout/': typeof LayoutIndexRoute
+  '/_layout/form-register/$idx': typeof LayoutFormRegisterIdxRoute
+  '/_layout/form-register/list': typeof LayoutFormRegisterListRoute
+  '/_layout/form-register/test': typeof LayoutFormRegisterTestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -104,9 +149,14 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/admin'
+    | '/directsend-mail'
+    | '/directsend-sms'
     | '/items'
     | '/settings'
     | '/'
+    | '/form-register/$idx'
+    | '/form-register/list'
+    | '/form-register/test'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -114,9 +164,14 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/admin'
+    | '/directsend-mail'
+    | '/directsend-sms'
     | '/items'
     | '/settings'
     | '/'
+    | '/form-register/$idx'
+    | '/form-register/list'
+    | '/form-register/test'
   id:
     | '__root__'
     | '/_layout'
@@ -125,9 +180,14 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/_layout/admin'
+    | '/_layout/directsend-mail'
+    | '/_layout/directsend-sms'
     | '/_layout/items'
     | '/_layout/settings'
     | '/_layout/'
+    | '/_layout/form-register/$idx'
+    | '/_layout/form-register/list'
+    | '/_layout/form-register/test'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -196,6 +256,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutItemsRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/directsend-sms': {
+      id: '/_layout/directsend-sms'
+      path: '/directsend-sms'
+      fullPath: '/directsend-sms'
+      preLoaderRoute: typeof LayoutDirectsendSmsRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/directsend-mail': {
+      id: '/_layout/directsend-mail'
+      path: '/directsend-mail'
+      fullPath: '/directsend-mail'
+      preLoaderRoute: typeof LayoutDirectsendMailRouteImport
+      parentRoute: typeof LayoutRoute
+    }
     '/_layout/admin': {
       id: '/_layout/admin'
       path: '/admin'
@@ -203,21 +277,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAdminRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/form-register/test': {
+      id: '/_layout/form-register/test'
+      path: '/form-register/test'
+      fullPath: '/form-register/test'
+      preLoaderRoute: typeof LayoutFormRegisterTestRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/form-register/list': {
+      id: '/_layout/form-register/list'
+      path: '/form-register/list'
+      fullPath: '/form-register/list'
+      preLoaderRoute: typeof LayoutFormRegisterListRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/form-register/$idx': {
+      id: '/_layout/form-register/$idx'
+      path: '/form-register/$idx'
+      fullPath: '/form-register/$idx'
+      preLoaderRoute: typeof LayoutFormRegisterIdxRouteImport
+      parentRoute: typeof LayoutRoute
+    }
   }
 }
 
 interface LayoutRouteChildren {
   LayoutAdminRoute: typeof LayoutAdminRoute
+  LayoutDirectsendMailRoute: typeof LayoutDirectsendMailRoute
+  LayoutDirectsendSmsRoute: typeof LayoutDirectsendSmsRoute
   LayoutItemsRoute: typeof LayoutItemsRoute
   LayoutSettingsRoute: typeof LayoutSettingsRoute
   LayoutIndexRoute: typeof LayoutIndexRoute
+  LayoutFormRegisterIdxRoute: typeof LayoutFormRegisterIdxRoute
+  LayoutFormRegisterListRoute: typeof LayoutFormRegisterListRoute
+  LayoutFormRegisterTestRoute: typeof LayoutFormRegisterTestRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutAdminRoute: LayoutAdminRoute,
+  LayoutDirectsendMailRoute: LayoutDirectsendMailRoute,
+  LayoutDirectsendSmsRoute: LayoutDirectsendSmsRoute,
   LayoutItemsRoute: LayoutItemsRoute,
   LayoutSettingsRoute: LayoutSettingsRoute,
   LayoutIndexRoute: LayoutIndexRoute,
+  LayoutFormRegisterIdxRoute: LayoutFormRegisterIdxRoute,
+  LayoutFormRegisterListRoute: LayoutFormRegisterListRoute,
+  LayoutFormRegisterTestRoute: LayoutFormRegisterTestRoute,
 }
 
 const LayoutRouteWithChildren =

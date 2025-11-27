@@ -13,6 +13,14 @@
   "dependencies": {
     "@chakra-ui/react": "^3.26.0",
     "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.5",
+    "@mui/material": "^7.3.5",
+    "@rjsf/chakra-ui": "^6.1.2",
+    "@rjsf/core": "^6.1.2",
+    "@rjsf/mui": "^6.1.2",
+    "@rjsf/utils": "^6.1.2",
+    "@rjsf/validator-ajv8": "^6.1.2",
     "@tanstack/react-query": "^5.87.1",
     "@tanstack/react-query-devtools": "^5.87.3",
     "@tanstack/react-router": "^1.131.36",
@@ -23,6 +31,7 @@
     "react-dom": "^19.1.1",
     "react-error-boundary": "^6.0.0",
     "react-hook-form": "7.62.0",
+    "react-hot-toast": "^2.6.0",
     "react-icons": "^5.5.0"
   },
   "devDependencies": {

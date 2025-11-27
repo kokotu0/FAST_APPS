@@ -3,44 +3,24 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { ItemsReadItemsData, ItemsReadItemsResponse, ItemsCreateItemData, ItemsCreateItemResponse, ItemsReadItemData, ItemsReadItemResponse, ItemsUpdateItemData, ItemsUpdateItemResponse, ItemsDeleteItemData, ItemsDeleteItemResponse, LoginLoginAccessTokenData, LoginLoginAccessTokenResponse, LoginTestTokenResponse, LoginRecoverPasswordData, LoginRecoverPasswordResponse, LoginResetPasswordData, LoginResetPasswordResponse, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentResponse, PrivateCreateUserData, PrivateCreateUserResponse, UsersReadUsersData, UsersReadUsersResponse, UsersCreateUserData, UsersCreateUserResponse, UsersReadUserMeResponse, UsersDeleteUserMeResponse, UsersUpdateUserMeData, UsersUpdateUserMeResponse, UsersUpdatePasswordMeData, UsersUpdatePasswordMeResponse, UsersRegisterUserData, UsersRegisterUserResponse, UsersReadUserByIdData, UsersReadUserByIdResponse, UsersUpdateUserData, UsersUpdateUserResponse, UsersDeleteUserData, UsersDeleteUserResponse, UtilsTestEmailData, UtilsTestEmailResponse, UtilsHealthCheckResponse } from './types.gen';
+import type { DirectsendMailSendMailData, DirectsendMailSendMailResponse, DirectsendMailGetMailServiceStatusResponse, DirectsendSmsSendSmsData, DirectsendSmsSendSmsResponse, DirectsendSmsGetSmsServiceStatusResponse, FormRegisterRegisterFormData, FormRegisterRegisterFormResponse, FormRegisterGetFormWithWrapperData, FormRegisterGetFormWithWrapperResponse, FormRegisterGetFormListData, FormRegisterGetFormListResponse, FormRegisterGetFormDetailData, FormRegisterGetFormDetailResponse, FormRegisterGetAllFormsResponse, FormRegisterBatchCreateFormsData, FormRegisterBatchCreateFormsResponse, FormRegisterGetFormConfigData, FormRegisterGetFormConfigResponse, LoginLoginAccessTokenData, LoginLoginAccessTokenResponse, LoginTestTokenResponse, LoginRecoverPasswordData, LoginRecoverPasswordResponse, LoginResetPasswordData, LoginResetPasswordResponse, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentResponse, UsersReadUsersData, UsersReadUsersResponse, UsersCreateUserData, UsersCreateUserResponse, UsersReadUserByIdxData, UsersReadUserByIdxResponse, UsersUpdateUserData, UsersUpdateUserResponse, UsersDeleteUserData, UsersDeleteUserResponse, UsersRegisterUserData, UsersRegisterUserResponse, UsersReadUserMeResponse, UsersDeleteUserMeResponse, UsersUpdateUserMeData, UsersUpdateUserMeResponse, UsersUpdatePasswordMeData, UsersUpdatePasswordMeResponse, UtilsTestEmailData, UtilsTestEmailResponse, UtilsHealthCheckResponse } from './types.gen';
 
-export class ItemsService {
+export class DirectsendMailService {
     /**
-     * Read Items
-     * Retrieve items.
-     * @param data The data for the request.
-     * @param data.skip
-     * @param data.limit
-     * @returns ItemsPublic Successful Response
-     * @throws ApiError
-     */
-    public static readItems(data: ItemsReadItemsData = {}): CancelablePromise<ItemsReadItemsResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/items/',
-            query: {
-                skip: data.skip,
-                limit: data.limit
-            },
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Create Item
-     * Create new item.
+     * Send Mail
+     * 메일 발송
+     *
+     * - 로그인한 사용자만 사용 가능
+     * - DirectSend API를 통해 메일 발송
      * @param data The data for the request.
      * @param data.requestBody
-     * @returns ItemPublic Successful Response
+     * @returns SendMailResponse Successful Response
      * @throws ApiError
      */
-    public static createItem(data: ItemsCreateItemData): CancelablePromise<ItemsCreateItemResponse> {
+    public static sendMail(data: DirectsendMailSendMailData): CancelablePromise<DirectsendMailSendMailResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/v1/items/',
+            url: '/api/v1/directsend/mail/send',
             body: data.requestBody,
             mediaType: 'application/json',
             errors: {
@@ -50,42 +30,35 @@ export class ItemsService {
     }
     
     /**
-     * Read Item
-     * Get item by ID.
-     * @param data The data for the request.
-     * @param data.id
-     * @returns ItemPublic Successful Response
+     * Get Mail Service Status
+     * 메일 서비스 상태 확인
+     * @returns unknown Successful Response
      * @throws ApiError
      */
-    public static readItem(data: ItemsReadItemData): CancelablePromise<ItemsReadItemResponse> {
+    public static getMailServiceStatus(): CancelablePromise<DirectsendMailGetMailServiceStatusResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/v1/items/{id}',
-            path: {
-                id: data.id
-            },
-            errors: {
-                422: 'Validation Error'
-            }
+            url: '/api/v1/directsend/mail/status'
         });
     }
-    
+}
+
+export class DirectsendSmsService {
     /**
-     * Update Item
-     * Update an item.
+     * Send Sms
+     * SMS 발송
+     *
+     * - 로그인한 사용자만 사용 가능
+     * - DirectSend API를 통해 SMS 발송
      * @param data The data for the request.
-     * @param data.id
      * @param data.requestBody
-     * @returns ItemPublic Successful Response
+     * @returns SendSMSResponse Successful Response
      * @throws ApiError
      */
-    public static updateItem(data: ItemsUpdateItemData): CancelablePromise<ItemsUpdateItemResponse> {
+    public static sendSms(data: DirectsendSmsSendSmsData): CancelablePromise<DirectsendSmsSendSmsResponse> {
         return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/api/v1/items/{id}',
-            path: {
-                id: data.id
-            },
+            method: 'POST',
+            url: '/api/v1/directsend/sms/send',
             body: data.requestBody,
             mediaType: 'application/json',
             errors: {
@@ -95,19 +68,151 @@ export class ItemsService {
     }
     
     /**
-     * Delete Item
-     * Delete an item.
-     * @param data The data for the request.
-     * @param data.id
-     * @returns Message Successful Response
+     * Get Sms Service Status
+     * SMS 서비스 상태 확인
+     * @returns unknown Successful Response
      * @throws ApiError
      */
-    public static deleteItem(data: ItemsDeleteItemData): CancelablePromise<ItemsDeleteItemResponse> {
+    public static getSmsServiceStatus(): CancelablePromise<DirectsendSmsGetSmsServiceStatusResponse> {
         return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/api/v1/items/{id}',
+            method: 'GET',
+            url: '/api/v1/directsend/sms/status'
+        });
+    }
+}
+
+export class FormRegisterService {
+    /**
+     * Register Form
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns FormRegisterResponse Successful Response
+     * @throws ApiError
+     */
+    public static registerForm(data: FormRegisterRegisterFormData): CancelablePromise<FormRegisterRegisterFormResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/formRegister/register',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Get Form With Wrapper
+     * 제네릭 래퍼로 감싼 단일 응답
+     * @param data The data for the request.
+     * @param data.formId
+     * @returns ApiResponse_FormRegisterResponse_ Successful Response
+     * @throws ApiError
+     */
+    public static getFormWithWrapper(data: FormRegisterGetFormWithWrapperData): CancelablePromise<FormRegisterGetFormWithWrapperResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/formRegister/single/{form_id}',
             path: {
-                id: data.id
+                form_id: data.formId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Get Form List
+     * 제네릭 페이지네이션 응답
+     * @param data The data for the request.
+     * @param data.page
+     * @param data.pageSize
+     * @returns PaginatedResponse_FormRegisterResponse_ Successful Response
+     * @throws ApiError
+     */
+    public static getFormList(data: FormRegisterGetFormListData = {}): CancelablePromise<FormRegisterGetFormListResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/formRegister/list',
+            query: {
+                page: data.page,
+                page_size: data.pageSize
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Get Form Detail
+     * 구체화된 제네릭 응답 클래스
+     * @param data The data for the request.
+     * @param data.formId
+     * @returns FormApiResponse Successful Response
+     * @throws ApiError
+     */
+    public static getFormDetail(data: FormRegisterGetFormDetailData): CancelablePromise<FormRegisterGetFormDetailResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/formRegister/detail/{form_id}',
+            path: {
+                form_id: data.formId
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Get All Forms
+     * 구체화된 페이지네이션 응답 클래스
+     * @returns FormListResponse Successful Response
+     * @throws ApiError
+     */
+    public static getAllForms(): CancelablePromise<FormRegisterGetAllFormsResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/formRegister/all'
+        });
+    }
+    
+    /**
+     * Batch Create Forms
+     * 배치 처리 결과 제네릭
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns BatchResult_FormRegisterResponse_ Successful Response
+     * @throws ApiError
+     */
+    public static batchCreateForms(data: FormRegisterBatchCreateFormsData): CancelablePromise<FormRegisterBatchCreateFormsResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/formRegister/batch',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Get Form Config
+     * 다중 타입 파라미터 제네릭
+     * @param data The data for the request.
+     * @param data.key
+     * @returns KeyValuePair_str__FormRegisterResponse_ Successful Response
+     * @throws ApiError
+     */
+    public static getFormConfig(data: FormRegisterGetFormConfigData): CancelablePromise<FormRegisterGetFormConfigResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/formRegister/config/{key}',
+            path: {
+                key: data.key
             },
             errors: {
                 422: 'Validation Error'
@@ -140,7 +245,7 @@ export class LoginService {
     /**
      * Test Token
      * Test access token
-     * @returns UserPublic Successful Response
+     * @returns UserOut Successful Response
      * @throws ApiError
      */
     public static testToken(): CancelablePromise<LoginTestTokenResponse> {
@@ -155,7 +260,7 @@ export class LoginService {
      * Password Recovery
      * @param data The data for the request.
      * @param data.email
-     * @returns Message Successful Response
+     * @returns app__models__Message Successful Response
      * @throws ApiError
      */
     public static recoverPassword(data: LoginRecoverPasswordData): CancelablePromise<LoginRecoverPasswordResponse> {
@@ -176,7 +281,7 @@ export class LoginService {
      * Reset password
      * @param data The data for the request.
      * @param data.requestBody
-     * @returns Message Successful Response
+     * @returns app__models__Message Successful Response
      * @throws ApiError
      */
     public static resetPassword(data: LoginResetPasswordData): CancelablePromise<LoginResetPasswordResponse> {
@@ -213,32 +318,10 @@ export class LoginService {
     }
 }
 
-export class PrivateService {
-    /**
-     * Create User
-     * Create a new user.
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns UserPublic Successful Response
-     * @throws ApiError
-     */
-    public static createUser(data: PrivateCreateUserData): CancelablePromise<PrivateCreateUserResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/private/users/',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-}
-
 export class UsersService {
     /**
      * Read Users
-     * Retrieve users.
+     * 유저 목록 조회 (관리자 전용)
      * @param data The data for the request.
      * @param data.skip
      * @param data.limit
@@ -261,10 +344,10 @@ export class UsersService {
     
     /**
      * Create User
-     * Create new user.
+     * 새 유저 생성 (관리자 전용)
      * @param data The data for the request.
      * @param data.requestBody
-     * @returns UserPublic Successful Response
+     * @returns UserOut Successful Response
      * @throws ApiError
      */
     public static createUser(data: UsersCreateUserData): CancelablePromise<UsersCreateUserResponse> {
@@ -280,9 +363,95 @@ export class UsersService {
     }
     
     /**
+     * Read User By Idx
+     * 특정 유저 조회 (관리자 전용)
+     * @param data The data for the request.
+     * @param data.userIdx
+     * @returns UserOut Successful Response
+     * @throws ApiError
+     */
+    public static readUserByIdx(data: UsersReadUserByIdxData): CancelablePromise<UsersReadUserByIdxResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/users/{user_idx}',
+            path: {
+                user_idx: data.userIdx
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Update User
+     * 유저 정보 수정 (관리자 전용)
+     * @param data The data for the request.
+     * @param data.userIdx
+     * @param data.requestBody
+     * @returns UserOut Successful Response
+     * @throws ApiError
+     */
+    public static updateUser(data: UsersUpdateUserData): CancelablePromise<UsersUpdateUserResponse> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/api/v1/users/{user_idx}',
+            path: {
+                user_idx: data.userIdx
+            },
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Delete User
+     * 유저 삭제 (관리자 전용)
+     * @param data The data for the request.
+     * @param data.userIdx
+     * @returns app__models__UserModels__Message Successful Response
+     * @throws ApiError
+     */
+    public static deleteUser(data: UsersDeleteUserData): CancelablePromise<UsersDeleteUserResponse> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/api/v1/users/{user_idx}',
+            path: {
+                user_idx: data.userIdx
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Register User
+     * 회원가입 (로그인 불필요)
+     * @param data The data for the request.
+     * @param data.requestBody
+     * @returns UserOut Successful Response
+     * @throws ApiError
+     */
+    public static registerUser(data: UsersRegisterUserData): CancelablePromise<UsersRegisterUserResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/users/signup',
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
      * Read User Me
-     * Get current user.
-     * @returns UserPublic Successful Response
+     * 현재 로그인한 유저 정보 조회
+     * @returns UserOut Successful Response
      * @throws ApiError
      */
     public static readUserMe(): CancelablePromise<UsersReadUserMeResponse> {
@@ -294,8 +463,8 @@ export class UsersService {
     
     /**
      * Delete User Me
-     * Delete own user.
-     * @returns Message Successful Response
+     * 본인 계정 삭제
+     * @returns app__models__UserModels__Message Successful Response
      * @throws ApiError
      */
     public static deleteUserMe(): CancelablePromise<UsersDeleteUserMeResponse> {
@@ -307,10 +476,10 @@ export class UsersService {
     
     /**
      * Update User Me
-     * Update own user.
+     * 본인 정보 수정
      * @param data The data for the request.
      * @param data.requestBody
-     * @returns UserPublic Successful Response
+     * @returns UserOut Successful Response
      * @throws ApiError
      */
     public static updateUserMe(data: UsersUpdateUserMeData): CancelablePromise<UsersUpdateUserMeResponse> {
@@ -327,10 +496,10 @@ export class UsersService {
     
     /**
      * Update Password Me
-     * Update own password.
+     * 본인 비밀번호 변경
      * @param data The data for the request.
      * @param data.requestBody
-     * @returns Message Successful Response
+     * @returns app__models__UserModels__Message Successful Response
      * @throws ApiError
      */
     public static updatePasswordMe(data: UsersUpdatePasswordMeData): CancelablePromise<UsersUpdatePasswordMeResponse> {
@@ -344,92 +513,6 @@ export class UsersService {
             }
         });
     }
-    
-    /**
-     * Register User
-     * Create new user without the need to be logged in.
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns UserPublic Successful Response
-     * @throws ApiError
-     */
-    public static registerUser(data: UsersRegisterUserData): CancelablePromise<UsersRegisterUserResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/users/signup',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Read User By Id
-     * Get a specific user by id.
-     * @param data The data for the request.
-     * @param data.userId
-     * @returns UserPublic Successful Response
-     * @throws ApiError
-     */
-    public static readUserById(data: UsersReadUserByIdData): CancelablePromise<UsersReadUserByIdResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/users/{user_id}',
-            path: {
-                user_id: data.userId
-            },
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Update User
-     * Update a user.
-     * @param data The data for the request.
-     * @param data.userId
-     * @param data.requestBody
-     * @returns UserPublic Successful Response
-     * @throws ApiError
-     */
-    public static updateUser(data: UsersUpdateUserData): CancelablePromise<UsersUpdateUserResponse> {
-        return __request(OpenAPI, {
-            method: 'PATCH',
-            url: '/api/v1/users/{user_id}',
-            path: {
-                user_id: data.userId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Delete User
-     * Delete a user.
-     * @param data The data for the request.
-     * @param data.userId
-     * @returns Message Successful Response
-     * @throws ApiError
-     */
-    public static deleteUser(data: UsersDeleteUserData): CancelablePromise<UsersDeleteUserResponse> {
-        return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/api/v1/users/{user_id}',
-            path: {
-                user_id: data.userId
-            },
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
 }
 
 export class UtilsService {
@@ -438,7 +521,7 @@ export class UtilsService {
      * Test emails.
      * @param data The data for the request.
      * @param data.emailTo
-     * @returns Message Successful Response
+     * @returns app__models__Message Successful Response
      * @throws ApiError
      */
     public static testEmail(data: UtilsTestEmailData): CancelablePromise<UtilsTestEmailResponse> {

@@ -3,24 +3,24 @@ import useCustomToast from "./hooks/useCustomToast"
 
 export const emailPattern = {
   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-  message: "Invalid email address",
+  message: "올바른 이메일 형식을 입력해주세요",
 }
 
 export const namePattern = {
-  value: /^[A-Za-z\s\u00C0-\u017F]{1,30}$/,
-  message: "Invalid name",
+  value: /^[A-Za-z\s\u00C0-\u017F가-힣]{1,30}$/,
+  message: "올바른 이름을 입력해주세요",
 }
 
 export const passwordRules = (isRequired = true) => {
   const rules: any = {
     minLength: {
       value: 8,
-      message: "Password must be at least 8 characters",
+      message: "비밀번호는 8자 이상이어야 합니다",
     },
   }
 
   if (isRequired) {
-    rules.required = "Password is required"
+    rules.required = "비밀번호를 입력해주세요"
   }
 
   return rules
@@ -28,17 +28,19 @@ export const passwordRules = (isRequired = true) => {
 
 export const confirmPasswordRules = (
   getValues: () => any,
+  passwordField: string = "password",
   isRequired = true,
 ) => {
   const rules: any = {
     validate: (value: string) => {
-      const password = getValues().password || getValues().new_password
-      return value === password ? true : "The passwords do not match"
+      const values = getValues()
+      const password = values[passwordField] || values.password || values.new_password || values.plain_password
+      return value === password ? true : "비밀번호가 일치하지 않습니다"
     },
   }
 
   if (isRequired) {
-    rules.required = "Password confirmation is required"
+    rules.required = "비밀번호 확인을 입력해주세요"
   }
 
   return rules

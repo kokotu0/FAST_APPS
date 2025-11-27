@@ -1,0 +1,51 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(del \"C:\\Users\\Administrator\\Desktop\\NewDewbellSite\\back\\api\\customer_service\\service.py\")",
+      "Bash(del \"C:\\Users\\Administrator\\Desktop\\NewDewbellSite\\back\\api\\quality_management\\service.py\")",
+      "Bash(rm:*)",
+      "Bash(python:*)",
+      "Bash(dir \"C:\\Users\\Administrator\\.claude\")",
+      "Bash(dir \"C:\\Users\\Administrator\\.claude\" /a)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(where claude)",
+      "Bash(powershell:*)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(claude mcp:*)",
+      "Bash(curl:*)",
+      "Bash(chcp:*)",
+      "Bash(gh pr:*)",
+      "Bash(where gh)",
+      "mcp__postgresql-db__pg_execute_query",
+      "Bash(alembic revision:*)",
+      "mcp__postgresql-db__pg_execute_sql",
+      "mcp__filesystem__create_directory",
+      "mcp__filesystem__write_file",
+      "mcp__filesystem__directory_tree",
+      "mcp__filesystem__list_directory",
+      "mcp__filesystem__read_text_file",
+      "mcp__filesystem__read_multiple_files",
+      "mcp__filesystem__edit_file",
+      "WebFetch(domain:eventsourcing.readthedocs.io)",
+      "Bash(del \"C:\\Users\\Administrator\\Desktop\\NewDewbellSite\\back\\core\\event_bus\\utils.py\")",
+      "Bash(dir:*)",
+      "Bash(where python)",
+      "Bash(set PYTHONPATH=.)",
+      "Bash(alembic stamp:*)",
+      "Bash(del:*)",
+      "Bash(timeout:*)",
+      "mcp__postgresql-db__pg_manage_schema",
+      "Read(F:\\NewDewbell\\new-front\\src\\features\\sales\\components\\form/**)",
+      "Read(F:\\NewDewbell\\new-front\\src\\features\\sales\\components\\form/**)",
+      "Read(F:\\NewDewbell\\new-front\\src\\features\\sales\\components\\form/**)",
+      "Read(F:\\NewDewbell\\new-front\\src\\features\\sales\\context/**)"
+    ],
+    "deny": [],
+    "additionalDirectories": [
+      "C:\\Users\\Administrator\\Desktop\\NewDewbellSite",
+      "C:\\Users\\Administrator\\Desktop"
+    ]
+  }
+}

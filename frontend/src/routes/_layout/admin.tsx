@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { z } from "zod"
 
-import { type UserPublic, UsersService } from "@/client"
+import { type UserOut, UsersService } from "@/client"
 import AddUser from "@/components/Admin/AddUser"
 import { UserActionsMenu } from "@/components/Common/UserActionsMenu"
 import PendingUsers from "@/components/Pending/PendingUsers"
@@ -35,7 +35,7 @@ export const Route = createFileRoute("/_layout/admin")({
 
 function UsersTable() {
   const queryClient = useQueryClient()
-  const currentUser = queryClient.getQueryData<UserPublic>(["currentUser"])
+  const currentUser = queryClient.getQueryData<UserOut>(["currentUser"])
   const navigate = useNavigate({ from: Route.fullPath })
   const { page } = Route.useSearch()
 
@@ -72,10 +72,10 @@ function UsersTable() {
         </Table.Header>
         <Table.Body>
           {users?.map((user) => (
-            <Table.Row key={user.id} opacity={isPlaceholderData ? 0.5 : 1}>
-              <Table.Cell color={!user.full_name ? "gray" : "inherit"}>
-                {user.full_name || "N/A"}
-                {currentUser?.id === user.id && (
+            <Table.Row key={user.idx} opacity={isPlaceholderData ? 0.5 : 1}>
+              <Table.Cell color={!user.name ? "gray" : "inherit"}>
+                {user.name || "N/A"}
+                {currentUser?.idx === user.idx && (
                   <Badge ml="1" colorScheme="teal">
                     You
                   </Badge>
@@ -87,11 +87,11 @@ function UsersTable() {
               <Table.Cell>
                 {user.is_superuser ? "Superuser" : "User"}
               </Table.Cell>
-              <Table.Cell>{user.is_active ? "Active" : "Inactive"}</Table.Cell>
+              <Table.Cell>{user.useYN ? "Active" : "Inactive"}</Table.Cell>
               <Table.Cell>
                 <UserActionsMenu
                   user={user}
-                  disabled={currentUser?.id === user.id}
+                  disabled={currentUser?.idx === user.idx}
                 />
               </Table.Cell>
             </Table.Row>
