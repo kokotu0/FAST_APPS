@@ -39,3 +39,4 @@ export const FormRegisterCard = ({ form, onClick }: FormRegisterCardProps) => {
 
 export default FormRegisterCard
 
+

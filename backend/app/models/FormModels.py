@@ -7,12 +7,13 @@ from app.core.model import Base
 
 
 class FormBase(SQLModel):
-    category:str = Field(min_length=1, max_length=255)
+    uuid: str = Field(max_length=36, unique=True, index=True)
+    category: str = Field(min_length=1, max_length=255)
     title: str = Field(min_length=1, max_length=255)
     description: str | None = Field(default=None, max_length=255)
     JSONSchema: Dict[str, Any] = Field(default={}, sa_column=Column(JSON))
     UISchema: Dict[str, Any] = Field(default={}, sa_column=Column(JSON))
-    Theme:str
+    Theme: str = Field(default="mui")
     useYN: bool = Field(default=True)
 
 class FormTemplate(FormBase, Base):

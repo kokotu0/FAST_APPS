@@ -5,6 +5,6 @@ export {
   type RJSFSchema,
   type UiSchema,
 } from "./FormRegisterForm"
-export { FormBuilder, type FormField } from "./FormBuilder"
+export { FormBuilder } from "./FormBuilder"
 export { FormPreview } from "./FormPreview"
 

@@ -1,0 +1,128 @@
+import { FormBuilder } from "@/features/formRegister/components/FormBuilder/FormBulider"
+import {
+  ObjectFieldTemplate,
+  SubmitButton,
+  customWidgets,
+} from "@/features/formRegister/components/FormBuilder/components"
+import FormJSON from "@/features/formRegister/components/FormJSON"
+import { Box, Paper, Tab, Tabs, Typography } from "@mui/material"
+import { createFileRoute } from "@tanstack/react-router"
+import { useState, useCallback } from "react"
+import type { RJSFSchema, UiSchema } from "@rjsf/utils"
+import type { IChangeEvent } from "@rjsf/core"
+import Form from "@rjsf/mui"
+import validator from "@rjsf/validator-ajv8"
+
+export const Route = createFileRoute("/_layout/form-register/builder")({
+  component: RouteComponent,
+})
+
+function RouteComponent() {
+  // 스키마 상태
+  const [schema, setSchema] = useState<RJSFSchema>({})
+  const [uiSchema, setUiSchema] = useState<UiSchema>({})
+  
+  // 폼 데이터 상태
+  const [formData, setFormData] = useState<unknown>({})
+  
+  // UI 상태
+  const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null)
+  const [tab, setTab] = useState(0)
+
+  // 스키마 변경 콜백 (분리된 버전)
+  const handleSchemaChange = useCallback((newSchema: RJSFSchema) => {
+    setSchema(newSchema)
+  }, [])
+
+  const handleUiSchemaChange = useCallback((newUiSchema: UiSchema) => {
+    setUiSchema(newUiSchema)
+  }, [])
+
+  // 폼 데이터 변경 콜백
+  const handleFormChange = useCallback((e: IChangeEvent) => {
+    setFormData(e.formData)
+  }, [])
+
+  // 폼 제출 콜백
+  const handleSubmit = useCallback((e: IChangeEvent) => {
+    console.log("Form submitted:", e.formData)
+    // 여기서 formData를 처리 (API 호출 등)
+  }, [])
+
+  return (
+    <Box
+      display="grid"
+      gridTemplateColumns="1fr 1fr"
+      gap={2}
+      height="calc(100vh - 100px)"
+      p={2}
+    >
+      {/* 왼쪽: 폼 미리보기 / 스키마 뷰어 (탭) */}
+      <Paper
+        variant="outlined"
+        sx={{ display: "flex", flexDirection: "column", overflow: "hidden" }}
+      >
+        <Tabs
+          value={tab}
+          onChange={(_, v: number) => setTab(v)}
+          sx={{ borderBottom: 1, borderColor: "divider", flexShrink: 0 }}
+        >
+          <Tab label="폼 미리보기" />
+          <Tab label="스키마 뷰어" />
+        </Tabs>
+
+        <Box sx={{ flex: 1, overflow: "auto", p: 2 }}>
+          {tab === 0 && (
+            <Form
+              schema={schema}
+              uiSchema={uiSchema}
+              formData={formData}
+              validator={validator}
+              onChange={handleFormChange}
+              onSubmit={handleSubmit}
+              templates={{
+                ObjectFieldTemplate,
+                ButtonTemplates: { SubmitButton },
+              }}
+              widgets={customWidgets}
+            />
+          )}
+          {tab === 1 && (
+            <FormJSON 
+              schema={schema} 
+              uiSchema={uiSchema} 
+              formData={formData}
+            />
+          )}
+        </Box>
+      </Paper>
+
+      {/* 오른쪽: 폼 빌더 */}
+      <Paper
+        variant="outlined"
+        sx={{ display: "flex", flexDirection: "column", overflow: "hidden" }}
+      >
+        <Box
+          sx={{
+            p: 1.5,
+            borderBottom: 1,
+            borderColor: "divider",
+            flexShrink: 0,
+          }}
+        >
+          <Typography variant="subtitle2" fontWeight={600}>
+            폼 빌더
+          </Typography>
+        </Box>
+        <Box sx={{ flex: 1, overflow: "auto", p: 2 }}>
+          <FormBuilder
+            onSchemaChange={handleSchemaChange}
+            onUiSchemaChange={handleUiSchemaChange}
+            selectedFieldId={selectedFieldId}
+            onFieldSelect={setSelectedFieldId}
+          />
+        </Box>
+      </Paper>
+    </Box>
+  )
+}

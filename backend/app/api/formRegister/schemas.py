@@ -45,6 +45,28 @@ class FormRegisterResponse(FormTemplate):
     pass
 
 
+class FormCreateRequest(BaseModel):
+    """폼 생성 요청"""
+    uuid: str | None = None  # None이면 서버에서 자동 생성
+    category: str = "default"
+    title: str
+    description: str | None = None
+    JSONSchema: dict = {}
+    UISchema: dict = {}
+    Theme: str = "mui"
+
+
+class FormUpdateRequest(BaseModel):
+    """폼 수정 요청"""
+    category: str | None = None
+    title: str | None = None
+    description: str | None = None
+    JSONSchema: dict | None = None
+    UISchema: dict | None = None
+    Theme: str | None = None
+    useYN: bool | None = None
+
+
 # ============ 제네릭 사용 예시 ============
 class FormApiResponse(ApiResponse[FormRegisterResponse]):
     """Form 단일 응답 (제네릭 구체화)"""

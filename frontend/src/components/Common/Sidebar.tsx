@@ -2,7 +2,7 @@ import { Box, Flex, IconButton, Text } from "@chakra-ui/react"
 import { useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { FaBars } from "react-icons/fa"
-import { FiLogOut } from "react-icons/fi"
+import { FiChevronLeft, FiChevronRight, FiLogOut } from "react-icons/fi"
 
 import type { UserOut } from "@/client"
 import useAuth from "@/hooks/useAuth"
@@ -21,6 +21,7 @@ const Sidebar = () => {
   const currentUser = queryClient.getQueryData<UserOut>(["currentUser"])
   const { logout } = useAuth()
   const [open, setOpen] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(false)
 
   return (
     <>
@@ -75,21 +76,58 @@ const Sidebar = () => {
         </DrawerContent>
       </DrawerRoot>
 
-      {/* Desktop */}
-
-      <Box
-        display={{ base: "none", md: "flex" }}
-        position="sticky"
-        bg="bg.subtle"
-        top={0}
-        minW="xs"
-        h="100vh"
-        p={4}
-      >
-        <Box w="100%">
-          <SidebarItems />
+      {/* Desktop - Collapsed */}
+      {isCollapsed && (
+        <Box
+          display={{ base: "none", md: "flex" }}
+          position="sticky"
+          bg="bg.subtle"
+          top={0}
+          w="48px"
+          h="100vh"
+          p={2}
+          flexDirection="column"
+          alignItems="center"
+        >
+          <IconButton
+            aria-label="Expand Sidebar"
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsCollapsed(false)}
+          >
+            <FiChevronRight />
+          </IconButton>
         </Box>
-      </Box>
+      )}
+
+      {/* Desktop - Expanded */}
+      {!isCollapsed && (
+        <Box
+          display={{ base: "none", md: "flex" }}
+          position="sticky"
+          bg="bg.subtle"
+          top={0}
+          minW="xs"
+          h="100vh"
+          p={4}
+          flexDirection="column"
+        >
+          {/* Collapse 버튼 */}
+          <Flex justify="flex-end" mb={2}>
+            <IconButton
+              aria-label="Collapse Sidebar"
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsCollapsed(true)}
+            >
+              <FiChevronLeft />
+            </IconButton>
+          </Flex>
+          <Box w="100%" flex={1}>
+            <SidebarItems />
+          </Box>
+        </Box>
+      )}
     </>
   )
 }

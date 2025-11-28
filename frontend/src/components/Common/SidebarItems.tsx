@@ -1,18 +1,11 @@
 import { Box, Flex, Icon, Text } from "@chakra-ui/react"
 import { useQueryClient } from "@tanstack/react-query"
 import { Link as RouterLink } from "@tanstack/react-router"
-import { FiBriefcase, FiFileText, FiHome, FiMail, FiMessageSquare, FiSettings, FiUsers } from "react-icons/fi"
+import { FiUsers } from "react-icons/fi"
 import type { IconType } from "react-icons/lib"
 
 import type { UserOut } from "@/client"
-
-const items = [
-  { icon: FiHome, title: "Dashboard", path: "/" },
-  { icon: FiFileText, title: "폼 등록", path: "/form-register/list" },
-  { icon: FiMail, title: "DirectSend 메일", path: "/directsend-mail" },
-  { icon: FiMessageSquare, title: "DirectSend SMS", path: "/directsend-sms" },
-  { icon: FiSettings, title: "User Settings", path: "/settings" },
-]
+import { SITEMAP } from "./sitemap"
 
 interface SidebarItemsProps {
   onClose?: () => void
@@ -29,8 +22,8 @@ const SidebarItems = ({ onClose }: SidebarItemsProps) => {
   const currentUser = queryClient.getQueryData<UserOut>(["currentUser"])
 
   const finalItems: Item[] = currentUser?.is_superuser
-    ? [...items, { icon: FiUsers, title: "Admin", path: "/admin" }]
-    : items
+    ? [...SITEMAP, { icon: FiUsers, title: "Admin", path: "/admin" }]
+    : SITEMAP;
 
   const listItems = finalItems.map(({ icon, title, path }) => (
     <RouterLink key={title} to={path} onClick={onClose}>
