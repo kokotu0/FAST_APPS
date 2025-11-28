@@ -72,14 +72,14 @@ def create_form(
 
 
 # 폼 상세 조회
-@router.get("/{form_uuid}", response_model=FormApiResponse)
+@router.get("/{idx}", response_model=FormApiResponse)
 def get_form(
     session: SessionDep,
     current_user: CurrentUser,
-    form_uuid: str,
+    idx: int,
 ):
     """폼 상세 조회"""
-    statement = select(FormTable).where(FormTable.uuid == form_uuid)
+    statement = select(FormTable).where(FormTable.idx == idx)
     form = session.exec(statement).first()
     if not form:
         raise HTTPException(status_code=404, detail="Form not found")
