@@ -12,7 +12,6 @@ load_dotenv()
 # 환경변수에서 DATABASE_URL 가져오기
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql+psycopg2://postgres:gksxogml1!@localhost:5432/newdewbell",  # 로컬 개발용 기본값
 )
 
 

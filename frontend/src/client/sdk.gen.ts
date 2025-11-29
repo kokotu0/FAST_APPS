@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { DirectsendMailSendMailData, DirectsendMailSendMailResponse, DirectsendMailGetMailServiceStatusResponse, DirectsendSmsSendSmsData, DirectsendSmsSendSmsResponse, DirectsendSmsGetSmsServiceStatusResponse, FormRegisterGetFormListData, FormRegisterGetFormListResponse, FormRegisterCreateFormData, FormRegisterCreateFormResponse, FormRegisterGetFormData, FormRegisterGetFormResponse, FormRegisterUpdateFormData, FormRegisterUpdateFormResponse, FormRegisterDeleteFormData, FormRegisterDeleteFormResponse, LoginLoginAccessTokenData, LoginLoginAccessTokenResponse, LoginTestTokenResponse, LoginRecoverPasswordData, LoginRecoverPasswordResponse, LoginResetPasswordData, LoginResetPasswordResponse, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentResponse, UsersRegisterUserData, UsersRegisterUserResponse, UsersReadUserMeResponse, UsersDeleteUserMeResponse, UsersUpdateUserMeData, UsersUpdateUserMeResponse, UsersUpdatePasswordMeData, UsersUpdatePasswordMeResponse, UsersReadUsersData, UsersReadUsersResponse, UsersCreateUserData, UsersCreateUserResponse, UsersReadUserByIdxData, UsersReadUserByIdxResponse, UsersUpdateUserData, UsersUpdateUserResponse, UsersDeleteUserData, UsersDeleteUserResponse, UtilsTestEmailData, UtilsTestEmailResponse, UtilsHealthCheckResponse } from './types.gen';
+import type { DirectsendMailSendMailData, DirectsendMailSendMailResponse, DirectsendMailGetMailServiceStatusResponse, DirectsendSmsSendSmsData, DirectsendSmsSendSmsResponse, DirectsendSmsGetSmsServiceStatusResponse, FormRegisterGetFormListData, FormRegisterGetFormListResponse, FormRegisterCreateFormData, FormRegisterCreateFormResponse, FormRegisterGetFormData, FormRegisterGetFormResponse, FormRegisterUpdateFormData, FormRegisterUpdateFormResponse, FormRegisterDeleteFormData, FormRegisterDeleteFormResponse, FormRegisterGetFormPublishesData, FormRegisterGetFormPublishesResponse, FormRegisterCreateFormPublishData, FormRegisterCreateFormPublishResponse, FormRegisterCreateFormPublishBatchData, FormRegisterCreateFormPublishBatchResponse, FormRegisterUpdateFormPublishData, FormRegisterUpdateFormPublishResponse, FormRegisterDeleteFormPublishData, FormRegisterDeleteFormPublishResponse, FormRegisterGetPublicFormData, FormRegisterGetPublicFormResponse, FormRegisterSubmitPublicFormData, FormRegisterSubmitPublicFormResponse, LoginLoginAccessTokenData, LoginLoginAccessTokenResponse, LoginTestTokenResponse, LoginRecoverPasswordData, LoginRecoverPasswordResponse, LoginResetPasswordData, LoginResetPasswordResponse, LoginRecoverPasswordHtmlContentData, LoginRecoverPasswordHtmlContentResponse, UsersRegisterUserData, UsersRegisterUserResponse, UsersReadUserMeResponse, UsersDeleteUserMeResponse, UsersUpdateUserMeData, UsersUpdateUserMeResponse, UsersUpdatePasswordMeData, UsersUpdatePasswordMeResponse, UsersReadUsersData, UsersReadUsersResponse, UsersCreateUserData, UsersCreateUserResponse, UsersReadUserByIdxData, UsersReadUserByIdxResponse, UsersUpdateUserData, UsersUpdateUserResponse, UsersDeleteUserData, UsersDeleteUserResponse, UtilsTestEmailData, UtilsTestEmailResponse, UtilsHealthCheckResponse } from './types.gen';
 
 export class DirectsendMailService {
     /**
@@ -185,6 +185,175 @@ export class FormRegisterService {
             path: {
                 form_uuid: data.formUuid
             },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Get Form Publishes
+     * 폼 배포 목록 조회
+     * @param data The data for the request.
+     * @param data.formUuid
+     * @param data.page
+     * @param data.pageSize
+     * @returns FormPublishListResponse Successful Response
+     * @throws ApiError
+     */
+    public static getFormPublishes(data: FormRegisterGetFormPublishesData): CancelablePromise<FormRegisterGetFormPublishesResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/formRegister/{form_uuid}/publish',
+            path: {
+                form_uuid: data.formUuid
+            },
+            query: {
+                page: data.page,
+                page_size: data.pageSize
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Create Form Publish
+     * 폼 배포 생성
+     * @param data The data for the request.
+     * @param data.formUuid
+     * @param data.requestBody
+     * @returns FormPublishApiResponse Successful Response
+     * @throws ApiError
+     */
+    public static createFormPublish(data: FormRegisterCreateFormPublishData): CancelablePromise<FormRegisterCreateFormPublishResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/formRegister/{form_uuid}/publish',
+            path: {
+                form_uuid: data.formUuid
+            },
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Create Form Publish Batch
+     * 폼 배포 일괄 생성
+     * @param data The data for the request.
+     * @param data.formUuid
+     * @param data.requestBody
+     * @returns ApiResponse Successful Response
+     * @throws ApiError
+     */
+    public static createFormPublishBatch(data: FormRegisterCreateFormPublishBatchData): CancelablePromise<FormRegisterCreateFormPublishBatchResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/formRegister/{form_uuid}/publish/batch',
+            path: {
+                form_uuid: data.formUuid
+            },
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Update Form Publish
+     * 폼 배포 수정
+     * @param data The data for the request.
+     * @param data.formUuid
+     * @param data.publishIdx
+     * @param data.requestBody
+     * @returns FormPublishApiResponse Successful Response
+     * @throws ApiError
+     */
+    public static updateFormPublish(data: FormRegisterUpdateFormPublishData): CancelablePromise<FormRegisterUpdateFormPublishResponse> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/formRegister/{form_uuid}/publish/{publish_idx}',
+            path: {
+                form_uuid: data.formUuid,
+                publish_idx: data.publishIdx
+            },
+            body: data.requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Delete Form Publish
+     * 폼 배포 삭제
+     * @param data The data for the request.
+     * @param data.formUuid
+     * @param data.publishIdx
+     * @returns unknown Successful Response
+     * @throws ApiError
+     */
+    public static deleteFormPublish(data: FormRegisterDeleteFormPublishData): CancelablePromise<FormRegisterDeleteFormPublishResponse> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/formRegister/{form_uuid}/publish/{publish_idx}',
+            path: {
+                form_uuid: data.formUuid,
+                publish_idx: data.publishIdx
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Get Public Form
+     * 공개 폼 조회 (토큰으로 접근, 로그인 불필요)
+     * @param data The data for the request.
+     * @param data.token
+     * @returns ApiResponse_PublicFormResponse_ Successful Response
+     * @throws ApiError
+     */
+    public static getPublicForm(data: FormRegisterGetPublicFormData): CancelablePromise<FormRegisterGetPublicFormResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/formRegister/public/{token}',
+            path: {
+                token: data.token
+            },
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Submit Public Form
+     * 공개 폼 제출 (만료 전까지 수정 가능)
+     * @param data The data for the request.
+     * @param data.token
+     * @param data.requestBody
+     * @returns unknown Successful Response
+     * @throws ApiError
+     */
+    public static submitPublicForm(data: FormRegisterSubmitPublicFormData): CancelablePromise<FormRegisterSubmitPublicFormResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/formRegister/public/{token}/submit',
+            path: {
+                token: data.token
+            },
+            body: data.requestBody,
+            mediaType: 'application/json',
             errors: {
                 422: 'Validation Error'
             }

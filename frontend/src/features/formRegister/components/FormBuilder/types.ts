@@ -230,6 +230,10 @@ export interface FormBuilderProps {
   onChange?: (schemas: FormSchemas) => void
   /** 초기 폼 데이터 */
   initialForm?: FormDefinition
+  /** 초기 JSON Schema (백엔드에서 로드) */
+  initialSchema?: RJSFSchema
+  /** 초기 UI Schema (백엔드에서 로드) */
+  initialUiSchema?: UiSchema
   /** 선택된 필드 ID (폼 미리보기에서 클릭 시) */
   selectedFieldId?: string | null
   /** 필드 선택 콜백 */

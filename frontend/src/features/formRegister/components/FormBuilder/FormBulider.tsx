@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useMemo } from "react"
 import { Box, Button, Paper, Typography } from "@mui/material"
 import { Add as AddIcon } from "@mui/icons-material"
 import {
@@ -17,6 +17,7 @@ import {
 } from "@dnd-kit/sortable"
 import { useFormBuilder } from "./useFormBuilder"
 import { SortableSectionEditor } from "./components"
+import { schemasToFormDefinition } from "./schemaConverter"
 import type { FormBuilderProps } from "./types"
 
 /**
@@ -31,10 +32,32 @@ const FormBuilder = ({
   onSchemaChange,
   onUiSchemaChange,
   initialForm,
+  initialSchema,
+  initialUiSchema,
   selectedFieldId,
   onFieldSelect,
 }: FormBuilderProps) => {
-  const builder = useFormBuilder(initialForm)
+  // 초기 스키마가 있으면 FormDefinition으로 변환
+  const computedInitialForm = useMemo(() => {
+    if (initialForm) return initialForm
+    if (initialSchema && Object.keys(initialSchema).length > 0) {
+      return schemasToFormDefinition(initialSchema, initialUiSchema || {})
+    }
+    return undefined
+  }, [initialForm, initialSchema, initialUiSchema])
+
+  const builder = useFormBuilder(computedInitialForm)
+  
+  // 스키마가 변경되면 폼 리로드
+  const prevSchemaRef = useRef<string>("")
+  useEffect(() => {
+    const schemaKey = JSON.stringify(initialSchema || {})
+    if (schemaKey !== prevSchemaRef.current && initialSchema && Object.keys(initialSchema).length > 0) {
+      prevSchemaRef.current = schemaKey
+      const newForm = schemasToFormDefinition(initialSchema, initialUiSchema || {})
+      builder.loadForm(newForm)
+    }
+  }, [initialSchema, initialUiSchema])
   
   // 콜백을 ref로 관리하여 의존성 문제 방지
   const onChangeRef = useRef(onChange)
