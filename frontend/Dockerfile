@@ -3,9 +3,9 @@ FROM node:24 AS build-stage
 
 WORKDIR /app
 
-COPY package*.json /app/
+COPY package.json /app/
 
-RUN npm ci --omit=optional
+RUN npm install --omit=optional
 
 COPY ./ /app/
 
