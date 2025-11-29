@@ -15,6 +15,16 @@ def get_engine():
     if _engine is None:
         from sqlalchemy import event
         
+        # DATABASE_URL 검증
+        if not DATABASE_URL:
+            raise RuntimeError(
+                "DATABASE_URL is not configured. "
+                "Please set DATABASE_URL environment variable or configure "
+                "POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DBNAME."
+            )
+        
+        logger.info(f"Connecting to database...")
+        
         # Engine 생성
         _engine = create_engine(
             DATABASE_URL, 
